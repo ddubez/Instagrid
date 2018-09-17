@@ -10,6 +10,9 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
+        <array key="Delm-Medium.otf">
+            <string>Delm-Medium</string>
+        </array>
         <array key="ThirstySoftRegular.otf">
             <string>ThirstySoftRegular</string>
         </array>
@@ -24,14 +27,33 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="s7g-Y4-LH1">
-                                <rect key="frame" x="20" y="72" width="335" height="585"/>
+                                <rect key="frame" x="19" y="72" width="337" height="585"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mbk-02-GKZ">
-                                        <rect key="frame" x="0.0" y="0.0" width="335" height="100"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mbk-02-GKZ" userLabel="SwipeView" customClass="SwipeView" customModule="Instagrid" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="337" height="100"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="qQ3-q3-MYl">
+                                                <rect key="frame" x="0.0" y="0.0" width="337" height="100"/>
+                                                <subviews>
+                                                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EXt-Ms-l4I">
+                                                        <rect key="frame" x="0.0" y="0.0" width="337" height="50"/>
+                                                    </imageView>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fgQ-ce-YC0">
+                                                        <rect key="frame" x="0.0" y="50" width="337" height="50"/>
+                                                        <fontDescription key="fontDescription" name="Delm-Medium" family="Delm" pointSize="21"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="100" id="45Y-Is-Cxl"/>
                                             <constraint firstAttribute="height" constant="100" id="C8I-rA-LPf"/>
+                                            <constraint firstItem="qQ3-q3-MYl" firstAttribute="leading" secondItem="Mbk-02-GKZ" secondAttribute="leading" id="CQs-pq-cK6"/>
+                                            <constraint firstAttribute="bottom" secondItem="qQ3-q3-MYl" secondAttribute="bottom" id="Dyz-Gv-vw3"/>
+                                            <constraint firstItem="qQ3-q3-MYl" firstAttribute="top" secondItem="Mbk-02-GKZ" secondAttribute="top" id="X4v-aB-EJm"/>
+                                            <constraint firstAttribute="trailing" secondItem="qQ3-q3-MYl" secondAttribute="trailing" id="YPL-45-sDj"/>
                                         </constraints>
                                         <variation key="default">
                                             <mask key="constraints">
@@ -44,12 +66,16 @@
                                                 <exclude reference="C8I-rA-LPf"/>
                                             </mask>
                                         </variation>
+                                        <connections>
+                                            <outlet property="icon" destination="EXt-Ms-l4I" id="zCf-GM-5dP"/>
+                                            <outlet property="label" destination="fgQ-ce-YC0" id="f3D-tJ-K6E"/>
+                                        </connections>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vf0-bl-Mvl" userLabel="GridView" customClass="CentralGrid" customModule="Instagrid" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="135" width="335" height="335"/>
+                                        <rect key="frame" x="0.0" y="133.5" width="337" height="337.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleAspectFit" axis="vertical" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="vXi-tL-GoC">
-                                                <rect key="frame" x="8" y="8" width="319" height="319"/>
+                                                <rect key="frame" x="8.5" y="8" width="321" height="321.5"/>
                                             </stackView>
                                         </subviews>
                                         <color key="backgroundColor" red="0.070943407710000003" green="0.39543640610000003" blue="0.61069226259999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -62,10 +88,10 @@
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Cfo-zl-fe7">
-                                        <rect key="frame" x="0.0" y="505" width="335" height="80"/>
+                                        <rect key="frame" x="0.0" y="504.5" width="337" height="80.5"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lgY-9C-oJR" userLabel="Button1">
-                                                <rect key="frame" x="0.0" y="0.0" width="79.5" height="80"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="80" height="80.5"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="lgY-9C-oJR" secondAttribute="height" multiplier="1:1" id="HFn-SR-8rW"/>
                                                 </constraints>
@@ -75,7 +101,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uya-Hj-CkD" userLabel="Button2">
-                                                <rect key="frame" x="127.5" y="0.0" width="79.5" height="80"/>
+                                                <rect key="frame" x="128.5" y="0.5" width="80.5" height="80"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="uya-Hj-CkD" secondAttribute="height" multiplier="1:1" id="g2e-bP-IvP"/>
                                                 </constraints>
@@ -85,7 +111,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kIa-Fp-JA1" userLabel="Button3">
-                                                <rect key="frame" x="255" y="0.0" width="80" height="80"/>
+                                                <rect key="frame" x="257" y="0.0" width="80" height="80.5"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="kIa-Fp-JA1" secondAttribute="height" multiplier="1:1" id="r00-as-VoR"/>
                                                 </constraints>
@@ -148,7 +174,7 @@
                                 </variation>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Instagrid" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="12v-Fu-iL1">
-                                <rect key="frame" x="140.5" y="30" width="95" height="32"/>
+                                <rect key="frame" x="140" y="30" width="95" height="32"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="32" id="ZtP-NT-qvE"/>
                                 </constraints>
@@ -174,11 +200,12 @@
                         <outlet property="button2" destination="uya-Hj-CkD" id="tCk-wZ-atA"/>
                         <outlet property="button3" destination="kIa-Fp-JA1" id="ney-tc-elR"/>
                         <outlet property="stackGrid" destination="vXi-tL-GoC" id="RC7-zs-ScL"/>
+                        <outlet property="swipeView" destination="Mbk-02-GKZ" id="EUN-p1-rJk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="21.600000000000001" y="29.23538230884558"/>
+            <point key="canvasLocation" x="20.625" y="28.52112676056338"/>
         </scene>
     </scenes>
     <resources>
