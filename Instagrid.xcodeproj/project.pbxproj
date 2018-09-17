@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F2C511E214A460400D49F69 /* CombinedPhotos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2C511D214A460400D49F69 /* CombinedPhotos.swift */; };
 		4FC0708C213D6A4E00DBAB53 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC0708B213D6A4E00DBAB53 /* AppDelegate.swift */; };
 		4FC0708E213D6A4E00DBAB53 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC0708D213D6A4E00DBAB53 /* ViewController.swift */; };
 		4FC07091213D6A4E00DBAB53 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4FC0708F213D6A4E00DBAB53 /* Main.storyboard */; };
@@ -15,10 +16,10 @@
 		4FC070A5213E623B00DBAB53 /* Delm-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4FC070A3213E623B00DBAB53 /* Delm-Medium.otf */; };
 		4FC070A7213E662000DBAB53 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4FC070A6213E662000DBAB53 /* Default-568h@2x.png */; };
 		4FC070A9213E6A2A00DBAB53 /* ThirstySoftRegular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4FC070A8213E6A2A00DBAB53 /* ThirstySoftRegular.otf */; };
-		4FC9272C214554E6007339D3 /* CentralGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC9272B214554E6007339D3 /* CentralGrid.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4F2C511D214A460400D49F69 /* CombinedPhotos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinedPhotos.swift; sourceTree = "<group>"; };
 		4FC07088213D6A4E00DBAB53 /* Instagrid.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Instagrid.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FC0708B213D6A4E00DBAB53 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4FC0708D213D6A4E00DBAB53 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -29,7 +30,6 @@
 		4FC070A3213E623B00DBAB53 /* Delm-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Delm-Medium.otf"; path = "Instagrid/External Files/Fonts/Delm-Medium.otf"; sourceTree = SOURCE_ROOT; };
 		4FC070A6213E662000DBAB53 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		4FC070A8213E6A2A00DBAB53 /* ThirstySoftRegular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = ThirstySoftRegular.otf; path = "Instagrid/External Files/Fonts/ThirstySoftRegular.otf"; sourceTree = SOURCE_ROOT; };
-		4FC9272B214554E6007339D3 /* CentralGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CentralGrid.swift; path = Instagrid/View/CentralGrid.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +74,7 @@
 		4FC0709E213DAD6900DBAB53 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				4F2C511D214A460400D49F69 /* CombinedPhotos.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -82,7 +83,6 @@
 			isa = PBXGroup;
 			children = (
 				4FC0708F213D6A4E00DBAB53 /* Main.storyboard */,
-				4FC9272B214554E6007339D3 /* CentralGrid.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -201,8 +201,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FC0708E213D6A4E00DBAB53 /* ViewController.swift in Sources */,
+				4F2C511E214A460400D49F69 /* CombinedPhotos.swift in Sources */,
 				4FC0708C213D6A4E00DBAB53 /* AppDelegate.swift in Sources */,
-				4FC9272C214554E6007339D3 /* CentralGrid.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -45,32 +45,27 @@
                                             </mask>
                                         </variation>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vf0-bl-Mvl" userLabel="GridView">
-                                        <rect key="frame" x="0.0" y="135" width="335" height="335.5"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vf0-bl-Mvl" userLabel="GridView" customClass="CentralGrid" customModule="Instagrid" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="135" width="335" height="335"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bz7-Bh-6nk" userLabel="Image View 1">
-                                                <rect key="frame" x="8" y="8" width="123" height="119"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            </imageView>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ISb-Nr-tI6" userLabel="Image View 3">
-                                                <rect key="frame" x="139" y="8" width="114" height="96"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            </imageView>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DD7-R5-G8X" userLabel="Image View 2">
-                                                <rect key="frame" x="8" y="135" width="123" height="104"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            </imageView>
+                                            <stackView opaque="NO" contentMode="scaleAspectFit" axis="vertical" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="vXi-tL-GoC">
+                                                <rect key="frame" x="8" y="8" width="319" height="319"/>
+                                            </stackView>
                                         </subviews>
                                         <color key="backgroundColor" red="0.070943407710000003" green="0.39543640610000003" blue="0.61069226259999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
+                                            <constraint firstItem="vXi-tL-GoC" firstAttribute="leading" secondItem="Vf0-bl-Mvl" secondAttribute="leading" constant="8" id="2lX-zM-XTX"/>
+                                            <constraint firstAttribute="bottom" secondItem="vXi-tL-GoC" secondAttribute="bottom" constant="8" id="8XG-U2-x15"/>
+                                            <constraint firstItem="vXi-tL-GoC" firstAttribute="top" secondItem="Vf0-bl-Mvl" secondAttribute="top" constant="8" id="BPr-C7-LFX"/>
                                             <constraint firstAttribute="width" secondItem="Vf0-bl-Mvl" secondAttribute="height" multiplier="1:1" id="cvt-dz-5kd"/>
+                                            <constraint firstAttribute="trailing" secondItem="vXi-tL-GoC" secondAttribute="trailing" constant="8" id="xxt-3A-V23"/>
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Cfo-zl-fe7">
                                         <rect key="frame" x="0.0" y="505" width="335" height="80"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lgY-9C-oJR" userLabel="Button1">
-                                                <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="79.5" height="80"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="lgY-9C-oJR" secondAttribute="height" multiplier="1:1" id="HFn-SR-8rW"/>
                                                 </constraints>
@@ -80,7 +75,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uya-Hj-CkD" userLabel="Button2">
-                                                <rect key="frame" x="127.5" y="0.0" width="80" height="80"/>
+                                                <rect key="frame" x="127.5" y="0.0" width="79.5" height="80"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="uya-Hj-CkD" secondAttribute="height" multiplier="1:1" id="g2e-bP-IvP"/>
                                                 </constraints>
@@ -153,7 +148,7 @@
                                 </variation>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Instagrid" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="12v-Fu-iL1">
-                                <rect key="frame" x="140" y="30" width="95" height="32"/>
+                                <rect key="frame" x="140.5" y="30" width="95" height="32"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="32" id="ZtP-NT-qvE"/>
                                 </constraints>
@@ -175,10 +170,10 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="Button1" destination="lgY-9C-oJR" id="8vL-mE-Bj1"/>
-                        <outlet property="Button2" destination="uya-Hj-CkD" id="Dsa-D8-v4G"/>
+                        <outlet property="button1" destination="lgY-9C-oJR" id="78O-DY-mRK"/>
                         <outlet property="button2" destination="uya-Hj-CkD" id="tCk-wZ-atA"/>
                         <outlet property="button3" destination="kIa-Fp-JA1" id="ney-tc-elR"/>
+                        <outlet property="stackGrid" destination="vXi-tL-GoC" id="RC7-zs-ScL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
