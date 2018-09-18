@@ -71,7 +71,7 @@
                                             <outlet property="label" destination="fgQ-ce-YC0" id="f3D-tJ-K6E"/>
                                         </connections>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vf0-bl-Mvl" userLabel="GridView" customClass="CentralGrid" customModule="Instagrid" customModuleProvider="target">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vf0-bl-Mvl" userLabel="GridView">
                                         <rect key="frame" x="0.0" y="133.5" width="337" height="337.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleAspectFit" axis="vertical" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="vXi-tL-GoC">
@@ -199,6 +199,7 @@
                         <outlet property="button1" destination="lgY-9C-oJR" id="78O-DY-mRK"/>
                         <outlet property="button2" destination="uya-Hj-CkD" id="tCk-wZ-atA"/>
                         <outlet property="button3" destination="kIa-Fp-JA1" id="ney-tc-elR"/>
+                        <outlet property="gridView" destination="Vf0-bl-Mvl" id="4gd-6G-sr3"/>
                         <outlet property="stackGrid" destination="vXi-tL-GoC" id="RC7-zs-ScL"/>
                         <outlet property="swipeView" destination="Mbk-02-GKZ" id="EUN-p1-rJk"/>
                     </connections>

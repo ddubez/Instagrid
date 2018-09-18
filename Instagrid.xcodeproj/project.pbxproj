@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4F2C511E214A460400D49F69 /* CombinedPhotos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2C511D214A460400D49F69 /* CombinedPhotos.swift */; };
+		4F2C511E214A460400D49F69 /* ImageViewSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2C511D214A460400D49F69 /* ImageViewSet.swift */; };
 		4FB47396214FE3D700222299 /* SwipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB47395214FE3D700222299 /* SwipeView.swift */; };
 		4FC0708C213D6A4E00DBAB53 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC0708B213D6A4E00DBAB53 /* AppDelegate.swift */; };
 		4FC0708E213D6A4E00DBAB53 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC0708D213D6A4E00DBAB53 /* ViewController.swift */; };
@@ -20,7 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		4F2C511D214A460400D49F69 /* CombinedPhotos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinedPhotos.swift; sourceTree = "<group>"; };
+		4F2C511D214A460400D49F69 /* ImageViewSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewSet.swift; sourceTree = "<group>"; };
 		4FB47395214FE3D700222299 /* SwipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SwipeView.swift; path = Instagrid/View/SwipeView.swift; sourceTree = SOURCE_ROOT; };
 		4FC07088213D6A4E00DBAB53 /* Instagrid.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Instagrid.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FC0708B213D6A4E00DBAB53 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -76,7 +76,7 @@
 		4FC0709E213DAD6900DBAB53 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				4F2C511D214A460400D49F69 /* CombinedPhotos.swift */,
+				4F2C511D214A460400D49F69 /* ImageViewSet.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -205,7 +205,7 @@
 			files = (
 				4FC0708E213D6A4E00DBAB53 /* ViewController.swift in Sources */,
 				4FB47396214FE3D700222299 /* SwipeView.swift in Sources */,
-				4F2C511E214A460400D49F69 /* CombinedPhotos.swift in Sources */,
+				4F2C511E214A460400D49F69 /* ImageViewSet.swift in Sources */,
 				4FC0708C213D6A4E00DBAB53 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
