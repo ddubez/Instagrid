@@ -50,7 +50,7 @@ class ImageViewSet {
 		}
 	}
 
-	func setStartImageView() -> (UIImageView) {
+	func makeStartImageView() -> (UIImageView) {
 		// set imageView for waiting an image
 		let newimage = UIImageView()
 		newimage.image = #imageLiteral(resourceName: "Icon Plus")

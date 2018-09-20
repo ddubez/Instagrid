@@ -38,10 +38,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		// set all the 4 imageView without any photos
-		imageViewSet.imageView1 = imageViewSet.setStartImageView()
-		imageViewSet.imageView2 = imageViewSet.setStartImageView()
-		imageViewSet.imageView3 = imageViewSet.setStartImageView()
-		imageViewSet.imageView4 = imageViewSet.setStartImageView()
+		imageViewSet.imageView1 = imageViewSet.makeStartImageView()
+		imageViewSet.imageView2 = imageViewSet.makeStartImageView()
+		imageViewSet.imageView3 = imageViewSet.makeStartImageView()
+		imageViewSet.imageView4 = imageViewSet.makeStartImageView()
 
 		// Set interface in layout 1 at the start
 		layout1Choosen()
@@ -73,7 +73,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 		})
 	}
 
-       private func layout1Choosen() {
+	private func layout1Choosen() {
         // method that set the interface (button, grid) when layout 1 is chosen
         button1.setImage(#imageLiteral(resourceName: "Selected"), for: .normal)
         button2.setImage(nil, for: .normal)
@@ -107,8 +107,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             stackGrid.removeArrangedSubview(subViews)
             subViews.removeFromSuperview()
         }
-        var row = 0
-        for _ in imageViewSet.images {
+//        var row = 0
+        for row in 0..<imageViewSet.images.count {
             // loop that iterate in the array of combinedPhotos,
             // create a stackView vith the imageViews and add it to the stackGrid
             let subStackView = UIStackView(arrangedSubviews: imageViewSet.images[row])
@@ -117,7 +117,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             subStackView.distribution = .fillEqually
             subStackView.spacing = 8
             stackGrid.addArrangedSubview(subStackView)
-            row += 1
+//            row += 1
         }
     }
 
@@ -140,19 +140,33 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 			}
 			row += 1
 		}
-		// displayAlertToChangeImage()
+		//displayAlertToChangeImage()
 		let newImage = #imageLiteral(resourceName: "Selected")
 		imageViewSet.setNewImageIn(imageViewToChange, with: newImage)
 	}
 
 	func displayAlertToChangeImage() {
+		// function for share a photo from the photo library
+		let imagePicker = UIImagePickerController()
+		imagePicker.delegate = self
+
 		let alertController = UIAlertController(title: "Choose Image Source", message: nil, preferredStyle: .actionSheet)
+
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
 		alertController.addAction(cancelAction)
+
+		if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+			let photoLibraryAction = UIAlertAction(title: "photo library", style: .default, handler: {_ in
+				imagePicker.sourceType = .photoLibrary
+				self.present(imagePicker, animated: true, completion: nil)
+			})
+			alertController.addAction(photoLibraryAction)
+			}
 		present(alertController, animated: true, completion: nil)
 	}
 
 	@objc func shareGrid() {
+		// function for share the grid image 
 		let capturedGridView = UIGraphicsImageRenderer(size: gridView.bounds.size)
 		let imagecapturedGridView = capturedGridView.image {_ in gridView.drawHierarchy(
 			in: gridView.bounds, afterScreenUpdates: true)
