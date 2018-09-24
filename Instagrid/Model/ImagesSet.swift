@@ -18,6 +18,8 @@ class ImagesSet {
 	var image2 = UIImage()
 	var image3 = UIImage()
 	var image4 = UIImage()
+	var imagefromLibrary = UIImage()
+	var imageToChangeLocation = [0, 0]
 
 	// creation of an 2D array of images
 	var images = [[UIImage]]()
@@ -56,45 +58,28 @@ class ImagesSet {
 		return defaultImage
 	}
 
-	func replaceImageAt(xaxis: Int, yaxis: Int, with newImage: UIImage) {
-		// remplace image at the location with a new image
-		let location = [yaxis, xaxis]
-		switch location {
+	func replaceImage() {
+		// remplace image at the location with image selected in library
+		switch imageToChangeLocation {
 		case [0, 0]:
-			image1 = newImage
+			image1 = imagefromLibrary
 		case [0, 1]:
-			image2 = newImage
+			image2 = imagefromLibrary
 		case [1, 0]:
 			if layout == .oneHightTwoLow {
-				image2 = newImage
+				image2 = imagefromLibrary
 			} else {
-				image3 = newImage
+				image3 = imagefromLibrary
 			}
 		case [1, 1]:
 			if layout == .twoHightTwoLow {
-				image4 = newImage
+				image4 = imagefromLibrary
 			} else {
-				image3 = newImage
+				image3 = imagefromLibrary
 			}
 		default :
 			break
 		}
 		setLayout(layout: layout)
-
-//		switch layout {
-//		case .oneHightTwoLow :
-//			if yaxis == 0, xaxis == 0 {image1 = newImage}
-//			if yaxis == 1, xaxis == 0 {image2 = newImage}
-//			if yaxis == 1, xaxis == 1 {image3 = newImage}
-//		case .twoHightOneLow :
-//			if yaxis == 0, xaxis == 0 {image1 = newImage}
-//			if yaxis == 0, xaxis == 1 {image2 = newImage}
-//			if yaxis == 1, xaxis == 0 {image3 = newImage}
-//		case .twoHightTwoLow :
-//			if yaxis == 0, xaxis == 0 {image1 = newImage}
-//			if yaxis == 0, xaxis == 1 {image2 = newImage}
-//			if yaxis == 1, xaxis == 0 {image3 = newImage}
-//			if yaxis == 1, xaxis == 1 {image4 = newImage}
-//		}
-		}
+	}
 }

@@ -54,7 +54,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 		let swipeGestureReconizer = UITapGestureRecognizer(target: self, action: #selector(shareGrid))
 		swipeView.addGestureRecognizer(swipeGestureReconizer)
 		// Gesture reconizer for erase grid images
-		let eraseAllGestureReconizer = UITapGestureRecognizer(target: self, action: #selector(eraseAllImage))
+		let eraseAllGestureReconizer = UITapGestureRecognizer(target: self, action: #selector(displayAlertToEraseAllImage))
 		eraseAllGestureReconizer.numberOfTapsRequired = 2
 		eraseAllGestureReconizer.numberOfTouchesRequired = 2
 		swipeView.addGestureRecognizer(eraseAllGestureReconizer)
@@ -120,6 +120,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 				let imageButton = UIButton()
 				imageButton.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
 				imageButton.setImage(imagesSet.images[row][column], for: .normal)
+				imageButton.imageView!.contentMode = .scaleAspectFill
 				imageButton.addTarget(self, action: #selector(imageButtonTapped(sender:)), for: .touchUpInside)
 				subStackView.addArrangedSubview(imageButton)
 			}
@@ -129,23 +130,21 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 
 	func imageButtonTapped(sender: UIButton) {
 		// method that runs when one of the images buttons is tapped
-		imagesSet.replaceImageAt(xaxis: findButtonTapped(sender: sender).x,
-								 yaxis: findButtonTapped(sender: sender).y,
-								 with: #imageLiteral(resourceName: "Selected"))
-		setGridViewLayout()
+		imagesSet.imageToChangeLocation = [findButtonTapped(sender: sender).row, findButtonTapped(sender: sender).column]
+		displayAlertToChangeImage()
 	}
 
-	func findButtonTapped(sender: UIButton) -> (x: Int, y: Int) {
+	func findButtonTapped(sender: UIButton) -> (row: Int, column: Int) {
 		//method that find the location of the button that was tapped
-		var xButton = 0
-		var yButton = 0
+		var buttonRow = 0
+		var buttonColomn = 0
 		for row in 0..<imagesSet.images.count {
 			for column in 0..<imagesSet.images[row].count where stackGrid.arrangedSubviews[row].subviews[column] == sender {
-				yButton = row
-				xButton = column
+				buttonRow = row
+				buttonColomn = column
 			}
 		}
-		return (xButton, yButton)
+		return (buttonRow, buttonColomn)
 	}
 
 	func displayAlertToChangeImage() {
@@ -154,9 +153,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 		imagePicker.delegate = self
 
 		let alertController = UIAlertController(title: "Choose Image Source", message: nil, preferredStyle: .actionSheet)
-
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-		alertController.addAction(cancelAction)
 
 		if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
 			let photoLibraryAction = UIAlertAction(title: "photo library", style: .default, handler: {_ in
@@ -165,7 +162,20 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 			})
 			alertController.addAction(photoLibraryAction)
 			}
+
+		alertController.addAction(cancelAction)
+
 		present(alertController, animated: true, completion: nil)
+	}
+
+	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: Any]) {
+		// function that capture image that user selected in his phone library
+		if let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+			imagesSet.imagefromLibrary = selectedImage
+			imagesSet.replaceImage()
+			setGridViewLayout()
+			dismiss(animated: true, completion: nil)
+		}
 	}
 
 	func shareGrid() {
@@ -179,7 +189,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 		present(activityController, animated: true, completion: nil)
 	}
 
-	func eraseAllImage() {
+	func displayAlertToEraseAllImage() {
 		// function that create a alert controler and ask if you waunt to erase all the images
 
 		let alertController = UIAlertController(title: "Erase all images ?", message: nil, preferredStyle: .alert)
