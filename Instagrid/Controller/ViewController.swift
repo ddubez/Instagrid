@@ -8,7 +8,8 @@
 
 import UIKit
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class ViewController: UIViewController, UIImagePickerControllerDelegate,
+						UINavigationControllerDelegate, UIGestureRecognizerDelegate {
 
     // MARK: - OUTLET
     @IBOutlet weak var button1: UIButton!
@@ -25,11 +26,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBAction func didTapButton1() {
         layout1Choosen()
     }
-
     @IBAction func didTapButton2() {
         layout2Choosen()
     }
-
     @IBAction func didTapButton3() {
         layout3Choosen()
     }
@@ -51,13 +50,20 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 		}
 
 		// Gesture reconizer for sharing grid images
-		let swipeGestureReconizer = UITapGestureRecognizer(target: self, action: #selector(shareGrid))
-		swipeView.addGestureRecognizer(swipeGestureReconizer)
+		let swipeUpGestureReconizer = UISwipeGestureRecognizer(target: self, action: #selector(swipeGrid(_:)))
+		swipeUpGestureReconizer.direction = .up
+		swipeUpGestureReconizer.delegate = self
+		gridView.addGestureRecognizer(swipeUpGestureReconizer)
+		let swipeLeftGestureReconizer = UISwipeGestureRecognizer(target: self, action: #selector(swipeGrid(_:)))
+		swipeLeftGestureReconizer.direction = .left
+		swipeLeftGestureReconizer.delegate = self
+		gridView.addGestureRecognizer(swipeLeftGestureReconizer)
+
 		// Gesture reconizer for erase grid images
 		let eraseAllGestureReconizer = UITapGestureRecognizer(target: self, action: #selector(displayAlertToEraseAllImage))
 		eraseAllGestureReconizer.numberOfTapsRequired = 2
 		eraseAllGestureReconizer.numberOfTouchesRequired = 2
-		swipeView.addGestureRecognizer(eraseAllGestureReconizer)
+		gridView.addGestureRecognizer(eraseAllGestureReconizer)
 	}
 
 	// monitor the change of screnn orientation and set swipeView style
@@ -103,7 +109,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     private func setGridViewLayout() {
         // method that fill the grid whith images depending of the layout chosed
         for subViews in stackGrid.arrangedSubviews {
-            // function that remove all subviews from the stackView and from the view hierarchy
+            // loop that remove all subviews from the stackView and from the view hierarchy
             stackGrid.removeArrangedSubview(subViews)
             subViews.removeFromSuperview()
         }
@@ -134,7 +140,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 		displayAlertToChangeImage()
 	}
 
-	func findButtonTapped(sender: UIButton) -> (row: Int, column: Int) {
+	private func findButtonTapped(sender: UIButton) -> (row: Int, column: Int) {
 		//method that find the location of the button that was tapped
 		var buttonRow = 0
 		var buttonColomn = 0
@@ -148,7 +154,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 	}
 
 	func displayAlertToChangeImage() {
-		// function for share a photo from the photo library
+		// function for use a photo from the photo library
 		let imagePicker = UIImagePickerController()
 		imagePicker.delegate = self
 
@@ -178,15 +184,46 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 		}
 	}
 
-	func shareGrid() {
+	func swipeGrid(_ sender: UISwipeGestureRecognizer) {
+		// function that swipe the grid if the gesture is up of left depending of orientation screen
+		switch sender.direction {
+		case UISwipeGestureRecognizerDirection.up where UIApplication.shared.statusBarOrientation.isPortrait :
+			animateExitOfGridView(inDirectiononx: 0, ony: -UIScreen.main.bounds.height)
+		case UISwipeGestureRecognizerDirection.left where UIApplication.shared.statusBarOrientation.isLandscape :
+			animateExitOfGridView(inDirectiononx: -UIScreen.main.bounds.width, ony: 0)
+		default :
+			break
+		}
+	}
+
+	private func animateExitOfGridView(inDirectiononx: CGFloat, ony: CGFloat) {
+		// function that animate the gridView
+		let translationTranform = CGAffineTransform(translationX: inDirectiononx, y: ony)
+		UIView.animate(withDuration: 0.5, animations: {self.gridView.transform = translationTranform},
+					   completion: {(success) in
+			if success {
+				self.shareGrid()
+			}
+		})
+	}
+
+	private func animateBackOfGridView() {
+		// function that animate gridView back
+		UIView.animate(withDuration: 0.5, animations: {self.gridView.transform = .identity}, completion: nil)
+	}
+
+	private func shareGrid() {
 		// function for share the grid image 
 		let capturedGridView = UIGraphicsImageRenderer(size: gridView.bounds.size)
 		let imagecapturedGridView = capturedGridView.image {_ in gridView.drawHierarchy(
 			in: gridView.bounds, afterScreenUpdates: true)
 		}
-		//let capturedGridView = gridView.snapshotView(afterScreenUpdates: false)
 		let activityController = UIActivityViewController(activityItems: [imagecapturedGridView], applicationActivities: nil)
+		activityController.completionWithItemsHandler = {(activityType, completed, returnedItems, error) in
+				self.animateBackOfGridView()
+		}
 		present(activityController, animated: true, completion: nil)
+
 	}
 
 	func displayAlertToEraseAllImage() {
@@ -205,7 +242,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
  		present(alertController, animated: true, completion: nil)
 	}
 
-	func setAllImagesToDefault() {
+	private func setAllImagesToDefault() {
 		// function that set all images to default and refresh the grid
 		imagesSet.image1 = imagesSet.makeDefaultImage()
 		imagesSet.image2 = imagesSet.makeDefaultImage()
