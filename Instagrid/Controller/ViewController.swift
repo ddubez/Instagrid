@@ -8,8 +8,8 @@
 
 import UIKit
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate,
-						UINavigationControllerDelegate, UIGestureRecognizerDelegate {
+class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate,
+	UIGestureRecognizerDelegate {
 
     // MARK: - OUTLET
     @IBOutlet weak var button1: UIButton!
@@ -21,6 +21,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,
 
 	// MARK: - PROPERTIES
     var imagesSet = ImagesSet()
+	var lastButtonTappedLocation = (row: 0, column: 0)
+	var buttonToMove = UIView()
+	var buttonToMoveRow = 0
+	var buttonToMoveColumn = 0
+	var gridFrames = [[CGRect]]()
 
     // MARK: - ACTION
     @IBAction func didTapButton1() {
@@ -49,21 +54,30 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,
 			self.swipeView.style = .portrait
 		}
 
-		// Gesture reconizer for sharing grid images
-		let swipeUpGestureReconizer = UISwipeGestureRecognizer(target: self, action: #selector(swipeGrid(_:)))
-		swipeUpGestureReconizer.direction = .up
-		swipeUpGestureReconizer.delegate = self
-		gridView.addGestureRecognizer(swipeUpGestureReconizer)
-		let swipeLeftGestureReconizer = UISwipeGestureRecognizer(target: self, action: #selector(swipeGrid(_:)))
-		swipeLeftGestureReconizer.direction = .left
-		swipeLeftGestureReconizer.delegate = self
-		gridView.addGestureRecognizer(swipeLeftGestureReconizer)
+		// Gesture recognizer for sharing grid images
+		let leftSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipeGrid(_:)))
+		leftSwipeGestureRecognizer.direction = .left
+		leftSwipeGestureRecognizer.delegate = self
+		gridView.addGestureRecognizer(leftSwipeGestureRecognizer)
 
-		// Gesture reconizer for erase grid images
-		let eraseAllGestureReconizer = UITapGestureRecognizer(target: self, action: #selector(displayAlertToEraseAllImage))
-		eraseAllGestureReconizer.numberOfTapsRequired = 2
-		eraseAllGestureReconizer.numberOfTouchesRequired = 2
-		gridView.addGestureRecognizer(eraseAllGestureReconizer)
+		let upSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipeGrid(_:)))
+		upSwipeGestureRecognizer.direction = .up
+		upSwipeGestureRecognizer.delegate = self
+		gridView.addGestureRecognizer(upSwipeGestureRecognizer)
+
+		// Gesture recognizer for erase grid images (BONUS1)
+		let eraseAllGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(displayAlertToEraseAllImage))
+		eraseAllGestureRecognizer.numberOfTapsRequired = 2
+		eraseAllGestureRecognizer.numberOfTouchesRequired = 2
+		eraseAllGestureRecognizer.delegate = self
+		self.view.addGestureRecognizer(eraseAllGestureRecognizer)
+
+		// Gesture recognizer for move images (BONUS2)
+		let gridViewPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(moveButtonGrid(sender:)))
+		gridViewPanGestureRecognizer.require(toFail: leftSwipeGestureRecognizer)
+		gridViewPanGestureRecognizer.require(toFail: upSwipeGestureRecognizer)
+		gridViewPanGestureRecognizer.delegate = self
+		gridView.addGestureRecognizer(gridViewPanGestureRecognizer)
 	}
 
 	// monitor the change of screnn orientation and set swipeView style
@@ -136,7 +150,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,
 
 	func imageButtonTapped(sender: UIButton) {
 		// method that runs when one of the images buttons is tapped
-		imagesSet.imageToChangeLocation = [findButtonTapped(sender: sender).row, findButtonTapped(sender: sender).column]
+		lastButtonTappedLocation = (findButtonTapped(sender: sender).row, findButtonTapped(sender: sender).column)
 		displayAlertToChangeImage()
 	}
 
@@ -177,8 +191,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,
 	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: Any]) {
 		// function that capture image that user selected in his phone library
 		if let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
-			imagesSet.imagefromLibrary = selectedImage
-			imagesSet.replaceImage()
+			imagesSet.replaceImage(imageToChangeLocation: lastButtonTappedLocation, with: selectedImage)
 			setGridViewLayout()
 			dismiss(animated: true, completion: nil)
 		}
@@ -226,6 +239,17 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,
 
 	}
 
+	private func setAllImagesToDefault() {
+		// function that set all images to default and refresh the grid
+		imagesSet.image1 = imagesSet.makeDefaultImage()
+		imagesSet.image2 = imagesSet.makeDefaultImage()
+		imagesSet.image3 = imagesSet.makeDefaultImage()
+		imagesSet.image4 = imagesSet.makeDefaultImage()
+		imagesSet.setLayout(layout: imagesSet.layout)
+		setGridViewLayout()
+	}
+
+	// MARK: - BONUS 1:
 	func displayAlertToEraseAllImage() {
 		// function that create a alert controler and ask if you waunt to erase all the images
 
@@ -239,16 +263,83 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,
 		alertController.addAction(cancelAction)
 		alertController.addAction(confirmationAction)
 
- 		present(alertController, animated: true, completion: nil)
+		present(alertController, animated: true, completion: nil)
 	}
 
-	private func setAllImagesToDefault() {
-		// function that set all images to default and refresh the grid
-		imagesSet.image1 = imagesSet.makeDefaultImage()
-		imagesSet.image2 = imagesSet.makeDefaultImage()
-		imagesSet.image3 = imagesSet.makeDefaultImage()
-		imagesSet.image4 = imagesSet.makeDefaultImage()
-		imagesSet.setLayout(layout: imagesSet.layout)
-		setGridViewLayout()
+	// MARK: - BONUS 2:
+	@objc func moveButtonGrid(sender: UIPanGestureRecognizer) {
+		// method that runs when one of the images buttons is touched with pan gesture
+		switch sender.state {
+		case .began:
+			buttonToMoveRow = findButtonPan(sender: sender).row
+			buttonToMoveColumn = findButtonPan(sender: sender).column
+			buttonToMove = stackGrid.arrangedSubviews[buttonToMoveRow].subviews[buttonToMoveColumn]
+		case .changed:
+			let transform = CGAffineTransform(translationX: sender.translation(in: gridView).x,
+											  y: sender.translation(in: gridView).y)
+			buttonToMove.transform = transform
+			buttonToMove.layer.opacity = 0.5
+			buttonToMove.layer.shadowOpacity = 1
+			buttonToMove.layer.shadowOffset = CGSize(width: 10, height: 10)
+			buttonToMove.layer.shadowColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+		case .ended:
+			for rowTarget in 0..<gridFrames.count {
+				for columnTarget in 0..<gridFrames[rowTarget].count {
+					let target = gridFrames[rowTarget][columnTarget]
+					if target.contains(sender.location(in: stackGrid)) {
+						imagesSet.replaceImage(imageToChangeLocation: (row: rowTarget, column: columnTarget),
+											   with: imagesSet.images[buttonToMoveRow][buttonToMoveColumn])
+						setGridViewLayout()
+					}
+				}
+			}
+			moveButtonEnded()
+		default:
+			break
+		}
+	}
+
+	private func moveButtonEnded() {
+		// method that animate the return of the button moved
+		UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.5,
+					   initialSpringVelocity: 2.0, options: [], animations: {
+			self.buttonToMove.transform = .identity
+			self.buttonToMove.layer.opacity = 1
+			self.buttonToMove.layer.shadowOpacity = 0
+		}, completion: nil)
+	}
+
+	private func findButtonPan(sender: UIPanGestureRecognizer) -> (row: Int, column: Int) {
+		//method that find the location of the button that was paned
+		gridFrames = listFramesFor()
+		var buttonRow = 0
+		var buttonColomn = 0
+		for row in 0..<imagesSet.images.count {
+			for column in 0..<imagesSet.images[row].count {
+				let target = stackGrid.arrangedSubviews[row].convert(
+					stackGrid.arrangedSubviews[row].subviews[column].frame,
+					to: stackGrid)
+				if target.contains(sender.location(in: stackGrid)) {
+					buttonRow = row
+					buttonColomn = column
+				}
+			}
+		}
+		return (buttonRow, buttonColomn)
+	}
+
+	private func listFramesFor() -> [[CGRect]] {
+		// method that set the list of button frames in the grid before moving a button
+		var frames = [[CGRect]]()
+		for row in 0..<imagesSet.images.count {
+			frames.append([])
+			for column in 0..<imagesSet.images[row].count {
+				let target = stackGrid.arrangedSubviews[row].convert(
+					stackGrid.arrangedSubviews[row].subviews[column].frame,
+					to: stackGrid)
+				frames[row].append(target)
+			}
+		}
+		return frames
 	}
 }

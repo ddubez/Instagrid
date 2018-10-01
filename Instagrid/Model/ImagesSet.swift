@@ -18,8 +18,6 @@ class ImagesSet {
 	var image2 = UIImage()
 	var image3 = UIImage()
 	var image4 = UIImage()
-	var imagefromLibrary = UIImage()
-	var imageToChangeLocation = [0, 0]
 
 	// creation of an 2D array of images
 	var images = [[UIImage]]()
@@ -58,25 +56,21 @@ class ImagesSet {
 		return defaultImage
 	}
 
-	func replaceImage() {
+	func replaceImage(imageToChangeLocation: (row: Int, column: Int), with newImage: UIImage) {
 		// remplace image at the location with image selected in library
 		switch imageToChangeLocation {
-		case [0, 0]:
-			image1 = imagefromLibrary
-		case [0, 1]:
-			image2 = imagefromLibrary
-		case [1, 0]:
-			if layout == .oneHightTwoLow {
-				image2 = imagefromLibrary
-			} else {
-				image3 = imagefromLibrary
-			}
-		case [1, 1]:
-			if layout == .twoHightTwoLow {
-				image4 = imagefromLibrary
-			} else {
-				image3 = imagefromLibrary
-			}
+		case (0, 0):
+			image1 = newImage
+		case (0, 1):
+			image2 = newImage
+		case (1, 0) where layout == .oneHightTwoLow:
+			image2 = newImage
+		case (1, 0) where layout != .oneHightTwoLow:
+			image3 = newImage
+		case (1, 1) where layout == .twoHightTwoLow:
+			image4 = newImage
+		case (1, 1) where layout != .twoHightTwoLow:
+			image3 = newImage
 		default :
 			break
 		}
