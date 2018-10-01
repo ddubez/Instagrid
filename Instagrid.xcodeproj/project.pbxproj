@@ -48,7 +48,6 @@
 		4FC0707F213D6A4E00DBAB53 = {
 			isa = PBXGroup;
 			children = (
-				4FC070A6213E662000DBAB53 /* Default-568h@2x.png */,
 				4FC0708A213D6A4E00DBAB53 /* Instagrid */,
 				4FC07089213D6A4E00DBAB53 /* Products */,
 			);
@@ -101,6 +100,7 @@
 		4FC070A1213DADA800DBAB53 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				4FC070A6213E662000DBAB53 /* Default-568h@2x.png */,
 				4FC07097213D6A5000DBAB53 /* Info.plist */,
 				4FC070A3213E623B00DBAB53 /* Delm-Medium.otf */,
 				4FC070A8213E6A2A00DBAB53 /* ThirstySoftRegular.otf */,

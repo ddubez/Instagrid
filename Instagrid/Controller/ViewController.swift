@@ -278,10 +278,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 			let transform = CGAffineTransform(translationX: sender.translation(in: gridView).x,
 											  y: sender.translation(in: gridView).y)
 			buttonToMove.transform = transform
-			buttonToMove.layer.opacity = 0.5
+			buttonToMove.layer.opacity = 0.8
 			buttonToMove.layer.shadowOpacity = 1
 			buttonToMove.layer.shadowOffset = CGSize(width: 10, height: 10)
 			buttonToMove.layer.shadowColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+			buttonToMove.layer.zPosition = 1
 		case .ended:
 			for rowTarget in 0..<gridFrames.count {
 				for columnTarget in 0..<gridFrames[rowTarget].count {
@@ -306,6 +307,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 			self.buttonToMove.transform = .identity
 			self.buttonToMove.layer.opacity = 1
 			self.buttonToMove.layer.shadowOpacity = 0
+			self.buttonToMove.layer.zPosition = 0
 		}, completion: nil)
 	}
 
