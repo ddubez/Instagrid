@@ -8,8 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate,
-	UIGestureRecognizerDelegate {
+class ViewController: UIViewController {
 
     // MARK: - OUTLET
     @IBOutlet weak var button1: UIButton!
@@ -47,36 +46,36 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 		//set all the 4 images without any photos
 		setAllImagesToDefault()
 
-		// ask the screnne orientation at the start and set swipeView style
-		if UIApplication.shared.statusBarOrientation.isLandscape {
+		//set button in the background (BONUS 2)
+		button1.layer.zPosition = -1
+		button2.layer.zPosition = -1
+		button3.layer.zPosition = -1
+
+		// ask the screen orientation at the start and set swipeView style
+		if UIDeviceOrientationIsLandscape(UIDevice.current.orientation) {
 			self.swipeView.style = .landscape
 		} else {
 			self.swipeView.style = .portrait
 		}
 
 		// Gesture recognizer for sharing grid images
-		let leftSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipeGrid(_:)))
-		leftSwipeGestureRecognizer.direction = .left
-		leftSwipeGestureRecognizer.delegate = self
-		gridView.addGestureRecognizer(leftSwipeGestureRecognizer)
-
-		let upSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipeGrid(_:)))
-		upSwipeGestureRecognizer.direction = .up
-		upSwipeGestureRecognizer.delegate = self
-		gridView.addGestureRecognizer(upSwipeGestureRecognizer)
+		for direction in [UISwipeGestureRecognizer.Direction.left, UISwipeGestureRecognizer.Direction.up] {
+			let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipeGrid(_:)))
+			swipeGestureRecognizer.direction = direction
+			gridView.addGestureRecognizer(swipeGestureRecognizer)
+		}
 
 		// Gesture recognizer for erase grid images (BONUS1)
 		let eraseAllGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(displayAlertToEraseAllImage))
 		eraseAllGestureRecognizer.numberOfTapsRequired = 2
 		eraseAllGestureRecognizer.numberOfTouchesRequired = 2
-		eraseAllGestureRecognizer.delegate = self
 		self.view.addGestureRecognizer(eraseAllGestureRecognizer)
 
 		// Gesture recognizer for move images (BONUS2)
 		let gridViewPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(moveButtonGrid(sender:)))
-		gridViewPanGestureRecognizer.require(toFail: leftSwipeGestureRecognizer)
-		gridViewPanGestureRecognizer.require(toFail: upSwipeGestureRecognizer)
-		gridViewPanGestureRecognizer.delegate = self
+		for swipeGesture in gridView.gestureRecognizers! where swipeGesture is UISwipeGestureRecognizer {
+				gridViewPanGestureRecognizer.require(toFail: swipeGesture)
+		}
 		gridView.addGestureRecognizer(gridViewPanGestureRecognizer)
 	}
 
@@ -84,13 +83,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 	override func willTransition(
 		to newCollection: UITraitCollection,
 		with coordinator: UIViewControllerTransitionCoordinator) {
+		super.willTransition(to: newCollection, with: coordinator)
 		coordinator.animate(alongsideTransition: { _ in
-			if UIApplication.shared.statusBarOrientation.isLandscape {
+			if UIDeviceOrientationIsLandscape(UIDevice.current.orientation) {
 				self.swipeView.style = .landscape
 			} else {
 				self.swipeView.style = .portrait
 			}
-		})
+		}, completion: nil)
 	}
 
 	private func layout1Choosen() {
@@ -120,7 +120,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         setGridViewLayout()
     }
 
-    private func setGridViewLayout() {
+	fileprivate func setGridViewLayout() {
         // method that fill the grid whith images depending of the layout chosed
         for subViews in stackGrid.arrangedSubviews {
             // loop that remove all subviews from the stackView and from the view hierarchy
@@ -128,7 +128,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             subViews.removeFromSuperview()
         }
 
-        for row in 0..<imagesSet.images.count {
+		for row in 0..<imagesSet.images.count {
             // loop that iterate in the array of combinedPhotos,
             // create a stackView vith new buttons created with images in imagesSet and add to stackGrid
 			let subStackView = UIStackView()
@@ -188,15 +188,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 		present(alertController, animated: true, completion: nil)
 	}
 
-	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: Any]) {
-		// function that capture image that user selected in his phone library
-		if let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
-			imagesSet.replaceImage(imageToChangeLocation: lastButtonTappedLocation, with: selectedImage)
-			setGridViewLayout()
-			dismiss(animated: true, completion: nil)
-		}
-	}
-
 	func swipeGrid(_ sender: UISwipeGestureRecognizer) {
 		// function that swipe the grid if the gesture is up of left depending of orientation screen
 		switch sender.direction {
@@ -239,7 +230,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 
 	}
 
-	private func setAllImagesToDefault() {
+	fileprivate func setAllImagesToDefault() {
 		// function that set all images to default and refresh the grid
 		imagesSet.image1 = imagesSet.makeDefaultImage()
 		imagesSet.image2 = imagesSet.makeDefaultImage()
@@ -248,8 +239,23 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 		imagesSet.setLayout(layout: imagesSet.layout)
 		setGridViewLayout()
 	}
+}
 
-	// MARK: - BONUS 1:
+extension ViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+	//extension for manage imagePickerController
+
+	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: Any]) {
+		// function that capture image that user selected in his phone library
+		if let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+			imagesSet.replaceImage(imageToChangeLocation: lastButtonTappedLocation, with: selectedImage)
+			setGridViewLayout()
+			dismiss(animated: true, completion: nil)
+		}
+	}
+}
+
+// MARK: - BONUS 1:
+extension ViewController {
 	func displayAlertToEraseAllImage() {
 		// function that create a alert controler and ask if you waunt to erase all the images
 
@@ -265,8 +271,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 
 		present(alertController, animated: true, completion: nil)
 	}
+}
 
-	// MARK: - BONUS 2:
+// MARK: - BONUS 2:
+extension ViewController {
 	@objc func moveButtonGrid(sender: UIPanGestureRecognizer) {
 		// method that runs when one of the images buttons is touched with pan gesture
 		switch sender.state {
