@@ -52,7 +52,7 @@ class ViewController: UIViewController {
 		button3.layer.zPosition = -1
 
 		// ask the screen orientation at the start and set swipeView style
-		if UIDeviceOrientationIsLandscape(UIDevice.current.orientation) {
+		if UIApplication.shared.statusBarOrientation.isLandscape {
 			self.swipeView.style = .landscape
 		} else {
 			self.swipeView.style = .portrait
@@ -80,17 +80,13 @@ class ViewController: UIViewController {
 	}
 
 	// monitor the change of screnn orientation and set swipeView style
-	override func willTransition(
-		to newCollection: UITraitCollection,
-		with coordinator: UIViewControllerTransitionCoordinator) {
-		super.willTransition(to: newCollection, with: coordinator)
-		coordinator.animate(alongsideTransition: { _ in
-			if UIDeviceOrientationIsLandscape(UIDevice.current.orientation) {
-				self.swipeView.style = .landscape
-			} else {
-				self.swipeView.style = .portrait
-			}
-		}, completion: nil)
+	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+		super.traitCollectionDidChange(previousTraitCollection)
+		if UIApplication.shared.statusBarOrientation.isLandscape {
+			self.swipeView.style = .landscape
+		} else {
+			self.swipeView.style = .portrait
+		}
 	}
 
 	private func layout1Choosen() {
